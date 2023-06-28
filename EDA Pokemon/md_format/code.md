@@ -5763,29 +5763,7 @@ pokedex.apply(desc_col,axis="index").T.reset_index()
 ```python
 # The 'name' of a Pokemon:
 
-"""
-The first question that comes to mind: How do we interpret this 'name' property of a Pokemon?
-
-Inspired by our intuition we might interpret it by the name that the 'name' property was given, that being 'name'.
-
-Intuitively such names may not seem to hold any "useful" information about a Pokemon, in the same way that 
-most names, such as those given to people, are assumed to be to a great extent arbitrary in comparison 
-with other properties of a person. 
-Consider this: 
-
-    If I told you that the reason for me being an Electrical Engineer 
-    is that my parents named me 'Sounak' when I was born, would you believe me?
-
-However, when considering names attributed in more well developed and scientific fields such as Biology, 
-suddenly a name becomes very significant in regards to the meaning it holds and information it gives us about the entity to which 
-the name is attributed. Often, such names are given a fancier name, such as Nomenclature or Terminology.
-
-Let us investigate these 'names' and try to form a better understanding of the properties that it might possess.
-
-Let us assume, that 'name's are given in some specific Language(which is simply a fancier word for a set of rules of interpretation) 
-and taking hints from the 'german_name' and 'japanese_name' properties, try to find the Language that 'name's hold their meaning in.
-"""
-
+# Observing the distribution of characters across 'name' values:
 # THE 'name' ALPHABET : 
 
 name_ALPH = pd.Series(dtype=np.int64)
@@ -5814,41 +5792,7 @@ print("The 'name' alphabet matches the English alphabet with",name_ALPH.iloc[10:
 ```python
 # The 'name' of a Pokemon:
 
-"""
-Studying this alphabet, might help us understand which language do names come from. However, the method in which 
-such a deduction is made, and the foundational knowledge on which it is based is undefined and unclear. What if it 
-is a different language from any language ever seen altogether?
-
-Let us call upon our good friend intution to help us out. Intuition says, its English. Well said intuition, well said.
-
-And so, we have made tremendous progress in understanding the 'name' property, now that we know what rules should be 
-applied in interpreting a 'name'. Hurray! But how well-defined are the rules of interpretation of English themselves, 
-that we use them as the foundational basis of our knowledge of 'name's. It is a natural language after all. ANYTHING GOES!
-
-On the contrary, Mathematics speaks in "well-defined" terms. However, I sometimes 
-do wonder, how "well-defined" is the defintion of "well-defined"? WAY TOO SELF REFERENTIAL!!!
-
-In reality, I do believe, that nothing is absolute, its all relative.(SO Nothing IS ABSOLUTE!) So is the case of definitions and 
-the algebraic nature present in them along with everything else.
-
-In English, the elementary units of meaning are words. Groups of letters seperated by spaces. It is because I say so.
-However, meaning is more convoluted than simply that which is described by words. Often, a specific sequence/ordering of 
-words convey a message which is lost/scattered when the meanings of the words are considered seperately in an unordered form.
-
-Thus in English, meaning is contained in not only words, but also specific order of words, called sentences.
-
-Meaning of words given through ordering of letters. Meaning of sentences given through ordering of words. If meaning is all we care about,
-Are letters words? Are sentences words? Are letters sentences? Are words sentences? Are words letters? Are sentences letters? If not then why?
-
-However, for the simplicity of our analysis, by the Supreme power vested in me, I claim that any information that 
-is contained in such orderings are "useless"/"irrelevant"/"worthless"/"meaningless"/"garbage"/"L" properties of a 'name' 
-when it comes to the role they play in describing/defining a Pokemon. 
-A "Pokemon", being subject to my definition of it as well! HAAHAHAHAHA! I AM THE RULER HERE!!! WHATEVER I SAY GOES!!!
-
-On the contrary, words are "W"/"interesting"/"significant" properties that a 'name' possesses, and play an important role in 
-the description of a Pokemon. Let us explore these words seperated by the ' ' character, in the English language. Why ' '?
-"""
-
+# Studying frequency of words in 'name' values.
 # The 'name' LEXICON :
 
 name_LXCO = pd.Series(dtype=np.int64)
@@ -6120,14 +6064,6 @@ prefix_encoding["Alolan"] = prefix_encoding.get("Alolan",prefix_encoding.size)
 
 def set_prefix(s,table,words=1):
     parts = re.split('\s',s["name"],1) # 1 word prefix seperated.
-
-    # t = parts[1] if len(parts)!=1 else ""
-    # while(t!="" and words>1):
-    #     temp = re.split('\s',t,1)
-    #     parts[0] += ' '+temp[0]
-    #     parts[1] = temp[1]
-    #     t = temp[1] if len(temp!=1) else ""
-    #     words -= 1
 
     if(table.get(parts[0],-1)!=-1):
         s["prefix"] = table[parts[0]]
@@ -7550,8 +7486,3 @@ pokedex.apply(desc_col,axis="index").T.reset_index()
 </div>
 
 
-
-
-```python
-
-```
