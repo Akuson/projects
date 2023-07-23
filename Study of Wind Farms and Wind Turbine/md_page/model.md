@@ -203,7 +203,7 @@ def calc_point_vel_superposition(V,x,y,turbines):
 rotor_D, hub_h, Ct, alpha = 20, 100, 0.7, 0.04
 
 # Wind Farm layout:
-V = 25 
+V = 15 
 seperation  = 7 * rotor_D
 rows = 5
 columns = 4
@@ -254,26 +254,26 @@ for wt in turbines:
     print(f"Position:({wt.x},{wt.y}) Velocity: {wt.V} m/s")
 ```
 
-    Position:(0,0) Velocity: 25.0 m/s
-    Position:(0,140) Velocity: 25.0 m/s
-    Position:(0,280) Velocity: 25.0 m/s
-    Position:(0,420) Velocity: 25.0 m/s
-    Position:(0,560) Velocity: 25.0 m/s
-    Position:(140,0) Velocity: 20.353823117040253 m/s
-    Position:(140,140) Velocity: 20.353823117040253 m/s
-    Position:(140,280) Velocity: 20.353823117040253 m/s
-    Position:(140,420) Velocity: 20.353823117040253 m/s
-    Position:(140,560) Velocity: 20.353823117040253 m/s
-    Position:(280,0) Velocity: 20.457096403279106 m/s
-    Position:(280,140) Velocity: 20.457096403279106 m/s
-    Position:(280,280) Velocity: 20.457096403279106 m/s
-    Position:(280,420) Velocity: 20.457096403279106 m/s
-    Position:(280,560) Velocity: 20.457096403279106 m/s
-    Position:(420,0) Velocity: 20.403488660938205 m/s
-    Position:(420,140) Velocity: 20.403488660938205 m/s
-    Position:(420,280) Velocity: 20.403488660938205 m/s
-    Position:(420,420) Velocity: 20.403488660938205 m/s
-    Position:(420,560) Velocity: 20.403488660938205 m/s
+    Position:(0,0) Velocity: 15.0 m/s
+    Position:(0,140) Velocity: 15.0 m/s
+    Position:(0,280) Velocity: 15.0 m/s
+    Position:(0,420) Velocity: 15.0 m/s
+    Position:(0,560) Velocity: 15.0 m/s
+    Position:(140,0) Velocity: 12.212293870224151 m/s
+    Position:(140,140) Velocity: 12.212293870224151 m/s
+    Position:(140,280) Velocity: 12.212293870224151 m/s
+    Position:(140,420) Velocity: 12.212293870224151 m/s
+    Position:(140,560) Velocity: 12.212293870224151 m/s
+    Position:(280,0) Velocity: 12.274257841967463 m/s
+    Position:(280,140) Velocity: 12.274257841967463 m/s
+    Position:(280,280) Velocity: 12.274257841967463 m/s
+    Position:(280,420) Velocity: 12.274257841967463 m/s
+    Position:(280,560) Velocity: 12.274257841967463 m/s
+    Position:(420,0) Velocity: 12.242093196562923 m/s
+    Position:(420,140) Velocity: 12.242093196562923 m/s
+    Position:(420,280) Velocity: 12.242093196562923 m/s
+    Position:(420,420) Velocity: 12.242093196562923 m/s
+    Position:(420,560) Velocity: 12.242093196562923 m/s
     
 
 ##### The resultant velocity field in the Wind Farm:
@@ -497,7 +497,7 @@ windpower_data.head()
 
 
 ```python
-def power_out(vel, rated_p=1.8, cut_in_v = 4, cut_out_v = 25, rated_v = 20):
+def power_out(vel, rated_p=1.8, cut_in_v = 4, cut_out_v = 25, rated_v = 15):
     """
     Returns the power output of a WT (mega watts) given upstream wind speed 'vel' (m/s)
     Default values are chosen of the Vestas V90 1.8 MW Wind Turbine
@@ -543,31 +543,31 @@ windpower_data.head()
       <th>2006-01-01 00:00:00</th>
       <td>5.12</td>
       <td>1.788</td>
-      <td>0.015926</td>
+      <td>0.038173</td>
     </tr>
     <tr>
       <th>2006-01-01 00:10:00</th>
       <td>5.12</td>
       <td>1.788</td>
-      <td>0.015926</td>
+      <td>0.038173</td>
     </tr>
     <tr>
       <th>2006-01-01 00:20:00</th>
       <td>5.14</td>
       <td>1.812</td>
-      <td>0.016285</td>
+      <td>0.039032</td>
     </tr>
     <tr>
       <th>2006-01-01 00:30:00</th>
       <td>5.17</td>
       <td>1.848</td>
-      <td>0.016827</td>
+      <td>0.040332</td>
     </tr>
     <tr>
       <th>2006-01-01 00:40:00</th>
       <td>5.24</td>
       <td>1.929</td>
-      <td>0.018117</td>
+      <td>0.043425</td>
     </tr>
   </tbody>
 </table>
@@ -626,7 +626,7 @@ axs[1].grid()
 axs[1].set_ylabel('Theoretical Output Power (MW)')
 axs[1].set_xlabel('Wind Speed (m/s)')
 # axs[1].set_facecolor("grey")
-axs[1].set_title('Power Curve of the Vestas V90 1.8MW Wind Turbine')
+axs[1].set_title('Theoretical Power Curve of WTG')
 
 
 plt.show()
