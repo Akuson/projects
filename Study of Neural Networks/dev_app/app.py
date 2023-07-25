@@ -15,7 +15,7 @@ def submit():
     pixel_data = data.get('pixelData')  # Assuming pixelData is an array of brightness values
 
     global model
-    result = f"{predict_digit(model,pixel_data)} \n {model.layers}"
+    result = f"{predict_digit(model,pixel_data)}"
     
     return jsonify({'output': result})
 
