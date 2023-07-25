@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Drawing App</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Canvas Drawing App</h1>
+    <canvas id="canvas" width="280" height="280" style="border: 1px solid black; background-color: black;"></canvas>
+    <button id="reset-btn">Reset</button>
+    <button id="submit-btn">Submit</button>
+    <div>
+        <h2>Output:</h2>
+        <p id="output-text">Output will appear here.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const resetButton = document.getElementById('reset-btn');
+        const submitButton = document.getElementById('submit-btn');
+        const outputText = document.getElementById('output-text');
+
+        // Set the canvas size to 28x28 pixels
+        canvas.width = 280;
+        canvas.height = 280;
+
+        let pixelData = Array(28).fill().map(() => Array(28).fill(0));
+
+        // Function to draw on the canvas with a softer brush
+        function draw(e) {
+            if (e.buttons !== 1) return; // Only draw when left mouse button is pressed
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / (rect.width / 28));
+            const y = Math.floor((e.clientY - rect.top) / (rect.height / 28));
+            
+            // Set the brush color to white with reduced opacity (soft brush effect)
+            context.fillStyle = 'rgba(255, 255, 255, 0.9)';
+
+            // Draw a filled circle at the current position
+            context.beginPath();
+            context.arc(x * 10, y * 10, 10, 0, 2 * Math.PI);
+            context.fill();
+
+            // Increase the corresponding pixel brightness value with reduced opacity
+            pixelData[y][x] = Math.min(pixelData[y][x] + 128, 255);
+        }
+
+        // Add event listener to handle canvas drawing
+        canvas.addEventListener('mousemove', draw);
+
+        // Add event listener for reset button
+        resetButton.addEventListener('click', () => {
+            pixelData = Array(28).fill().map(() => Array(28).fill(0)); // Reset pixelData array
+            context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        });
+
+        // Add event listener for submit button
+        submitButton.addEventListener('click', () => {
+            // Send the pixel data to the backend for processing
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pixelData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the output section with the result from the backend
+                outputText.textContent = `Output: ${data.output}`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

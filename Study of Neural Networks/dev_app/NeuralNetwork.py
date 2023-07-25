@@ -4,19 +4,18 @@ class NN(object):
     # len(layer_sizes) == layers + 1 ; (Since, input layer is also included.)
     def __init__(model, layers, layer_sizes, activations, loss_func, deriv_loss, method='standard',AdaM_opt=False,dropout=False):
         def assign_func(name:str):
-            match name:
-                case 'ReLU':
-                    return (lambda x: x*(x>0), lambda y: 1*(y>0))
-                case 'Leaky_ReLU':
-                    return (lambda x: x*(x>0) + 0.5*x*(x<0), lambda y: 1*(y>0) + 0.5*(y<0))
-                case 'Sigmoid':
-                    return (lambda x: np.where(x<0,np.exp(x)/(1+np.exp(x)),1/(1+np.exp(-x))), lambda y: y*(1-y))
-                case 'tanh':
-                    return (lambda x: np.tanh(x),lambda y: 1 - (y**2))
-                case 'my_transform': # With the unbound nature of 'ReLU' and the smooth nature of 'tanh'.
-                    return(lambda x:np.log(np.abs((2*(x>0)-1)+x)), lambda y: 1/np.exp(np.abs(y)))
-                case _:
-                    return (lambda x: x, lambda y: 1)
+            if name=='ReLU':
+                return (lambda x: x*(x>0), lambda y: 1*(y>0))
+            if name=='Leaky_ReLU':
+                return (lambda x: x*(x>0) + 0.5*x*(x<0), lambda y: 1*(y>0) + 0.5*(y<0))
+            if name=='Sigmoid':
+                return (lambda x: np.where(x<0,np.exp(x)/(1+np.exp(x)),1/(1+np.exp(-x))), lambda y: y*(1-y))
+            if name=='tanh':
+                return (lambda x: np.tanh(x),lambda y: 1 - (y**2))
+            if name=='my_transform': # With the unbound nature of 'ReLU' and the smooth nature of 'tanh'.
+                return(lambda x:np.log(np.abs((2*(x>0)-1)+x)), lambda y: 1/np.exp(np.abs(y)))
+            
+            return (lambda x: x, lambda y: 1)
 
         def set_hyper_params(model):
             # alpha = int(input("Enter the learning rate : "))
@@ -320,7 +319,7 @@ class NN(object):
         return total_loss
 
     # Inference routine
-    def model_predict(model, X):
+    def predict(model, X):
 
         layers = model.layers.size - 1
 

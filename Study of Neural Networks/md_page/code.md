@@ -495,7 +495,7 @@ plot_decisions(model_XOR_sharp)
     Trial 1800: [0.14912937]
     Trial 2000: [0.13581173]
     [[0.43253345 0.59423079 0.7052382  0.32279087]]
-
+    
 
 
     
@@ -530,7 +530,7 @@ plot_decisions(model_XOR_smooth)
     Trial 1800: [0.08809952]
     Trial 2000: [0.07500517]
     [[0.12769168 0.67874606 0.6741515  0.27219336]]
-
+    
 
 
     
@@ -565,7 +565,7 @@ plot_decisions(model_XOR_AdaM)
     Trial 1800: [1.15494167e-29]
     Trial 2000: [3.87034882e-30]
     [[-8.88178420e-16  1.00000000e+00  1.00000000e+00 -1.11022302e-15]]
-
+    
 
 
     
@@ -768,7 +768,7 @@ output_dims = classes.size
 ```
 
     [8 0 5 4 1 3 6 2 9 7]
-
+    
 
 
 ```python
@@ -798,13 +798,12 @@ model_A = NN(2,[input_dims, input_dims//5, output_dims],["Sigmoid", "Sigmoid", ]
 
 
 ```python
-""" 
-The model that got me to 95% accuracy and its training journey:
+"""
+The model and its training journey:
 
     model_A = NN(2,[input_dims, input_dims//5, output_dims],["Sigmoid", "Sigmoid", ],mse_loss,mse_loss_deriv,'batch_norm',True,True)
 
-Started with MSE loss, then shifted to softmax loss(but I think that was bad decision as data was not sharp and many samples were confusing) 
-then finally settled with logistic loss.
+Started with MSE loss, then shifted to softmax loss then finally settled with logistic loss.
 
 Initially trained with Large dropout at high learning rate with mini-batches with MSE.
 
@@ -820,48 +819,16 @@ Then started to train on specific batches with high loss thershold(~0.105) while
     even though the training was done at exponentially lower learning rates. Maybe the space is very sharp and ragged, so the model was unable to traverse 
     it well earlier. One of the factors that caused this is the capabilites of Adaptive Moment Gradient Descent.
 
-Reached 95%.
+Reached 95% accuracy.
 """
 ```
 
 
 ```python
-"""
-End-Game Training Strategy: Small batches(near 0.1), fraction of nodes(near 0.5), moderate learning rate(near 0.01).
-
-(Dropout Small to Large is relative to problem complexity. Complex problem have higher lower bound of "Small")
-(Empirically about 0.4. Also varies from model to model depending on number of nodes in the layer).
-
-Batch sizes variation: Large -> Small (To fit to specific edge cases)
-Dropout: Large -> High alpha (Since most well-trained but unstable dimensions are cut off) ; Small -> Low alpha (Since unstable dimensions might diverge otherwise) 
-Dropout: Small -> Large batches (General learning) ; Large -> Small Batches (Specific learning) 
-Batches: Small -> First Large Dropout then shift to Medium, with changing accuracy.
-Trials: Small -> When small batches to prevent overfitting ; Large -> Depends on other factors, but for large batches, overfitting not a problem. 
-
-
-Is AdaM optimization insignificant at lower learning rates?
-
-Teach smaller networks specifically(dpt:0.4,alph: 0.0001,trials: 101,batch_size: 0.15), 
-then reinforce larger network generally(0.7, 0.000001, 201, 0.5)?
-
-Teach smaller networks(Large Dropout) with high learning rate specific examples, then adapt to larger network(Small Dropout) at an exponentially lower learning rate to generalize. (Without losing its previous "foothold")
-
-    alpha_high/alpha_low = total_trials_general//2 ?  (Not neccessarily, as seen empirically, model keeps improving even if total_trials surpasses alpha_high/alpha_low)
-
-Does SGD work better late game with low learning rates, or does it work better early game with high learning rates? 
-
-Does changing loss function over times matter? Started with MSE till 95%, then switched to Softmax temporarily, finally log-loss.
-
-Once the model starts to saturate, with overall accuracy of 85-90%, what if we change our strategy and create artificial batches with more incorrect examples 
-and less correct examples. Then train the model on these batches at lower learning rates to allow it to forget some of the old relations and replace them with 
-more versatile ones? (e.g. Out of all possible mini-batches, train only on those with loss greater than some threshold.)
-"""
-
 # np.random.seed(694201337)
 model_A.loss = log_loss
 model_A.deriv_loss = log_loss_deriv
 # model_A.dropout_probs[1, 0] = 1
-# model_A.isAdaM = True
 
 # To prevent overflow
 model_A.frwrd_trials = 1000
@@ -909,7 +876,6 @@ for _ in range(mini_batches):
             print("---------------------------------------------------------------------------------------------------")
 
 ```
-
     ...
 
     Trial number: 0
@@ -1047,17 +1013,12 @@ for _ in range(mini_batches):
     Trial number: 20
     The total training accuracy:  0.09016786593925741
     ---------------------------------------------------------------------------------------------------
-
+    
 
 
 ```python
 plt.plot(train_loss_curve_A)
 ```
-
-
-
-
-    [<matplotlib.lines.Line2D at 0x7f7138a13b50>]
 
 
 
@@ -1080,7 +1041,7 @@ print("Number of steps taken forward:",model_A.frwrd_trials)
     Sum of normalized shifts: -73.43802004488033
     Number of steps taken backward: 3100
     Number of steps taken forward: 5200
-
+    
 
 
 ```python
@@ -1102,20 +1063,18 @@ print("Incorrectly predicted",np.sum(labels != predicted_labels)/labels.shape[0]
     Total examples: 42000
     Incorrectly predicted examples 2057
     Incorrectly predicted 4.897619047619048 %
-
+    
 
 
 ```python
 random_example = np.random.randint(0,examples)
-# print(np.sum(y[:,[random_example]]*decode_labels,axis=0))
-# print(np.sum(y_pred[:,[random_example]]*decode_labels,axis=0))
 print("Reference answer:",y[:,[random_example]].T)
 print("Model's answer:",y_pred[:,[random_example]].T)
 ```
 
     Reference answer: [[0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]
     Model's answer: [[0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]]
-
+    
 
 
 ```python
