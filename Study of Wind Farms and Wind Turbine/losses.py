@@ -32,9 +32,9 @@ def softmax_deriv(y_hat): # 'y_hat' has shape: (output_classes, batch_size)
     return derivs
 
 def mse_loss(y,y_hat):
-    return (1/float(y.shape[0]))*(y_hat-y)**2
+    return (1/y.shape[0])*(y_hat-y)**2
 def mse_loss_deriv(y,y_hat):
-    return 2 * (y_hat - y) / float(y.shape[0])
+    return 2 * (y_hat - y) / y.shape[0]
 
 def log_loss(y,y_hat):
     return -np.sum(y*np.log(y_hat)-(1-y)*np.log(1-y_hat),axis=0,keepdims=True)
